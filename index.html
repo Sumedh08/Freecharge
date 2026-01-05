@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProTrade India</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Chart.js for graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+    <div id="app">
+        <!-- Auth Section -->
+        <div id="auth-section" class="container">
+            <div class="card" style="width: 400px; text-align: center;">
+                <h1 style="margin-bottom: 2rem; color: var(--primary);">ProTrade India</h1>
+                <div class="tabs" style="justify-content: center;">
+                    <button id="show-login" class="active">Login</button>
+                    <button id="show-signup">Signup</button>
+                </div>
+
+                <form id="login-form">
+                    <input type="email" id="login-email" placeholder="Email" required>
+                    <input type="password" id="login-password" placeholder="Password" required>
+                    <button type="submit" class="primary-btn">Login to Platform</button>
+                </form>
+
+                <form id="signup-form" class="hidden">
+                    <input type="text" id="signup-name" placeholder="Full Name" required>
+                    <input type="email" id="signup-email" placeholder="Email" required>
+                    <input type="text" id="signup-mobile" placeholder="Mobile" required>
+                    <input type="password" id="signup-password" placeholder="Password" required>
+                    <button type="submit" class="primary-btn">Create Account (Get ₹1 Cr)</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Dashboard Layout -->
+        <div id="dashboard-section" class="hidden">
+            <!-- Sidebar -->
+            <nav class="sidebar">
+                <div class="logo">ProTrade 🚀</div>
+
+                <div class="nav-links">
+                    <button id="nav-dashboard" class="active">📊 Dashboard</button>
+                    <button id="nav-market">📈 Market</button>
+                    <button id="nav-portfolio">💼 Portfolio</button>
+                    <button id="nav-leaderboard">🏆 Leaderboard</button>
+                </div>
+
+                <div class="nav-bottom">
+                    <div class="user-mini-profile" style="margin-bottom: 1rem; color: var(--text-secondary);">
+                        <small>Logged in as</small><br>
+                        <strong id="user-name">User</strong>
+                    </div>
+                    <button id="logout-btn" style="color: var(--danger);">Logout</button>
+                </div>
+            </nav>
+
+            <!-- Main Content Area -->
+            <main class="main-area">
+                <!-- Top Bar -->
+                <header class="header">
+                    <div>
+                        <h2 id="page-title">Dashboard</h2>
+                        <p style="color: var(--text-secondary);" id="current-date">Today</p>
+                    </div>
+                    <div class="balance-pill navbar-item">
+                        <small>Buying Power</small>
+                        <h3 id="wallet-balance">₹0.00</h3>
+                    </div>
+                </header>
+
+                <!-- Views Container -->
+                <div id="router-view">
+
+                    <!-- Dashboard View -->
+                    <div id="view-dashboard">
+                        <div class="dashboard-grid">
+                            <div class="card">
+                                <h3>Portfolio Performance</h3>
+                                <canvas id="portfolioChart" height="200"></canvas>
+                            </div>
+                            <div class="card">
+                                <h3>Quick Actions</h3>
+                                <p style="color: var(--text-secondary); margin-bottom: 1rem;">Top Movers</p>
+                                <div id="top-movers-list">Loading...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Market View -->
+                    <div id="view-market" class="hidden">
+                        <div class="search-bar" style="max-width: 400px; margin-bottom: 1rem;">
+                            <input type="text" id="stock-search" placeholder="Search 50+ Indian Stocks...">
+                        </div>
+                        <div id="stock-list" class="market-grid">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Portfolio View -->
+                    <div id="view-portfolio" class="hidden">
+                        <div id="portfolio-list" class="market-grid">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Leaderboard View -->
+                    <div id="view-leaderboard" class="hidden">
+                        <div class="tabs">
+                            <button class="active" onclick="loadLeaderboard('weekly')">Weekly</button>
+                            <button onclick="loadLeaderboard('monthly')">Monthly</button>
+                            <button onclick="loadLeaderboard('all-time')">All Time</button>
+                        </div>
+                        <div class="card">
+                            <table class="leaderboard-table">
+                                <thead>
+                                    <tr>
+                                        <th>Rank</th>
+                                        <th>Trader</th>
+                                        <th>Return %</th>
+                                        <th>Portfolio Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="leaderboard-body">
+                                    <!-- Populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Trade Modal -->
+    <div id="trade-modal" class="modal hidden"
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; z-index: 200;">
+        <div class="modal-content card" style="width: 400px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                <h2 id="modal-stock-name">Stock</h2>
+                <span class="close-modal" style="cursor: pointer; font-size: 1.5rem;">&times;</span>
+            </div>
+
+            <h1 id="modal-stock-price" style="margin-bottom: 1.5rem;">₹0.00</h1>
+
+            <div class="tabs" style="margin-bottom: 1rem;">
+                <button id="tab-buy" class="active" style="flex: 1;">Buy</button>
+                <button id="tab-sell" style="flex: 1;">Sell</button>
+            </div>
+
+            <input type="number" id="trade-quantity" placeholder="Number of shares">
+
+            <div
+                style="display: flex; justify-content: space-between; margin-bottom: 1rem; color: var(--text-secondary);">
+                <span>Total Cost</span>
+                <span id="trade-total" style="color: var(--text-primary); font-weight: bold;">₹0.00</span>
+            </div>
+
+            <button id="confirm-trade-btn" class="primary-btn">Confirm Order</button>
+        </div>
+    </div>
+
+    <script src="js/script.js?v=7"></script>
+</body>
+
+</html>
