@@ -1,7 +1,6 @@
 package com.invest.Trading.service;
 
-
-import com.invest.Trading.model.Coin;
+import com.invest.Trading.model.Stock;
 import com.invest.Trading.model.User;
 import com.invest.Trading.model.Watchlist;
 import com.invest.Trading.repository.WatchlistRepository;
@@ -11,15 +10,14 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class WatchlistServiceImpl implements WatchlistService{
+public class WatchlistServiceImpl implements WatchlistService {
     @Autowired
     private WatchlistRepository watchlistRepository;
 
-
     @Override
     public Watchlist findUserWatchlist(Long userId) throws Exception {
-        Watchlist watchlist=watchlistRepository.findByUserId(userId);
-        if(watchlist==null){
+        Watchlist watchlist = watchlistRepository.findByUserId(userId);
+        if (watchlist == null) {
             throw new Exception("watch not found");
         }
         return watchlist;
@@ -27,7 +25,7 @@ public class WatchlistServiceImpl implements WatchlistService{
 
     @Override
     public Watchlist createWatchList(User user) {
-        Watchlist watchlist=new Watchlist();
+        Watchlist watchlist = new Watchlist();
         watchlist.setUser(user);
         return watchlistRepository.save(watchlist);
     }
@@ -35,21 +33,21 @@ public class WatchlistServiceImpl implements WatchlistService{
     @Override
     public Watchlist findById(Long id) throws Exception {
         Optional<Watchlist> optionalWatchlist = watchlistRepository.findById(id);
-        if(optionalWatchlist.isEmpty()){
+        if (optionalWatchlist.isEmpty()) {
             throw new Exception("watch list not found");
         }
         return optionalWatchlist.get();
     }
 
     @Override
-    public Coin addItemToWatchlist(Coin coin, User user) throws Exception {
-        Watchlist watchlist=findUserWatchlist(user.getId());
+    public Stock addItemToWatchlist(Stock stock, User user) throws Exception {
+        Watchlist watchlist = findUserWatchlist(user.getId());
 
-        if(watchlist.getCoins().contains(coin)){
-            watchlist.getCoins().remove(coin);
-        }
-        else watchlist.getCoins().add(coin);
+        if (watchlist.getStocks().contains(stock)) {
+            watchlist.getStocks().remove(stock);
+        } else
+            watchlist.getStocks().add(stock);
         watchlistRepository.save(watchlist);
-        return coin;
+        return stock;
     }
 }

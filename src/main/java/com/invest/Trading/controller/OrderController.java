@@ -1,14 +1,12 @@
 package com.invest.Trading.controller;
 
-
-import com.invest.Trading.model.Coin;
+import com.invest.Trading.model.Stock;
 import com.invest.Trading.model.Order;
 import com.invest.Trading.model.User;
 import com.invest.Trading.request.CreateOrderRequest;
-import com.invest.Trading.service.CoinService;
+import com.invest.Trading.service.StockService;
 import com.invest.Trading.service.OrderService;
 import com.invest.Trading.service.UserService;
-import com.invest.Trading.service.WalletTransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,17 +23,12 @@ public class OrderController {
     private UserService userSerivce;
 
     @Autowired
-    private CoinService coinService;
-
-    @Autowired
-    private WalletTransactionService walletTransactionService;
-
-//    private
+    private StockService stockService;
 
     @Autowired
     public OrderController(OrderService orderService, UserService userSerivce) {
         this.orderService = orderService;
-        this.userSerivce=userSerivce;
+        this.userSerivce = userSerivce;
     }
 
     @PostMapping("/pay")
@@ -45,20 +38,18 @@ public class OrderController {
 
     ) throws Exception {
         User user = userSerivce.findUserProfileByJwt(jwt);
-        Coin coin =coinService.findById(req.getCoinId());
+        Stock stock = stockService.getStockDetails(req.getStockId());
 
+        Order order = orderService.processOrder(stock, req.getQuantity(), req.getOrderType(), user);
 
-            Order order = orderService.processOrder(coin,req.getQuantity(),req.getOrderType(),user);
-
-            return ResponseEntity.ok(order);
+        return ResponseEntity.ok(order);
 
     }
 
     @GetMapping("/{orderId}")
     public ResponseEntity<Order> getOrderById(
             @RequestHeader("Authorization") String jwtToken,
-            @PathVariable Long orderId
-    ) throws Exception {
+            @PathVariable Long orderId) throws Exception {
         if (jwtToken == null) {
             throw new Exception("token missing...");
         }
@@ -77,19 +68,15 @@ public class OrderController {
     public ResponseEntity<List<Order>> getAllOrdersForUser(
             @RequestHeader("Authorization") String jwtToken,
             @RequestParam(required = false) String order_type,
-            @RequestParam(required = false) String asset_symbol
-    ) throws Exception {
+            @RequestParam(required = false) String asset_symbol) throws Exception {
         if (jwtToken == null) {
             throw new Exception("token missing...");
         }
 
         Long userId = userSerivce.findUserProfileByJwt(jwtToken).getId();
 
-        List<Order> userOrders = orderService.getAllOrdersForUser(userId,order_type,asset_symbol);
+        List<Order> userOrders = orderService.getAllOrdersForUser(userId, order_type, asset_symbol);
         return ResponseEntity.ok(userOrders);
     }
-
-
-
 
 }

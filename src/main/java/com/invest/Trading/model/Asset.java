@@ -21,8 +21,8 @@ public class Asset {
     private double buyPrice;
 
     @ManyToOne
-    @JoinColumn(name = "coin_id")
-    private Coin coin;
+    @JoinColumn(name = "stock_id")
+    private Stock stock;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

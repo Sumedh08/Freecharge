@@ -4,25 +4,21 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.invest.Trading.model.Stock;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TreadingHistory {
-
+public class PortfolioSnapshot {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private double sellingPrice;
+    private Long userId;
 
-    private double buyingPrice;
+    private double totalValue; // Cash + Asset Value
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Stock stock;
-
-    @ManyToOne
-    private User user;
+    private LocalDateTime timestamp;
 }

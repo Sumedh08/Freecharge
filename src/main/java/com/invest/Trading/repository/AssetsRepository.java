@@ -13,11 +13,10 @@ public interface AssetsRepository extends JpaRepository<Asset, Long> {
 
    List<Asset> findByUserId(Long userId);
 
-   Asset findByUserIdAndCoinId(Long userId, String coinId);
+   Asset findByUserIdAndStockId(Long userId, String stockId);
 
    Asset findByIdAndUserId(Long assetId, Long userId);
 
-   Asset findAssetByUserIdAndCoinId(Long userId,String coinId) throws Exception;
-
+   Asset findAssetByUserIdAndStockId(Long userId, String stockId) throws Exception;
 
 }

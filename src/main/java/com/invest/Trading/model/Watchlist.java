@@ -22,5 +22,5 @@ public class Watchlist {
     private User user;
 
     @ManyToMany
-    private List<Coin> coins = new ArrayList<>();
+    private List<Stock> stocks = new ArrayList<>();
 }

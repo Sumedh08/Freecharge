@@ -21,7 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-
+import java.math.BigDecimal;
 
 import java.util.Optional;
 
@@ -36,9 +36,9 @@ public class AuthController {
 
     @Autowired
     public AuthController(JwtProvider jwtProvider,
-                          UserRepository userRepository,
-                          AuthenticationManager authenticationManager,
-                          PasswordEncoder passwordEncoder) {
+            UserRepository userRepository,
+            AuthenticationManager authenticationManager,
+            PasswordEncoder passwordEncoder) {
         this.jwtProvider = jwtProvider;
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
@@ -58,12 +58,12 @@ public class AuthController {
         newUser.setFullName(user.getFullName());
         newUser.setMobile(user.getMobile());
         newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        newUser.setBalance(new BigDecimal("10000000")); // 1 Crore INR Initial Balance
 
         userRepository.save(newUser);
 
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
-        );
+                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtProvider.generateToken(authentication);
@@ -80,8 +80,7 @@ public class AuthController {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             loginRequest.getEmail(),
-                            loginRequest.getPassword())
-            );
+                            loginRequest.getPassword()));
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String token = jwtProvider.generateToken(authentication);

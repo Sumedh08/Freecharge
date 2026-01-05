@@ -1,6 +1,5 @@
 package com.invest.Trading.controller;
 
-
 import com.invest.Trading.exception.AssetNotFoundException;
 import com.invest.Trading.exception.UserNotFoundException;
 import com.invest.Trading.model.Asset;
@@ -34,13 +33,13 @@ public class AssetController {
         return ResponseEntity.ok(asset);
     }
 
-    @GetMapping("/coin/{coinId}/user")
-    public ResponseEntity<?> getAssetByUserIdAndCoinId(
-            @PathVariable String coinId,
+    @GetMapping("/stock/{stockId}/user")
+    public ResponseEntity<?> getAssetByUserIdAndStockId(
+            @PathVariable String stockId,
             @RequestHeader("Authorization") String jwt) {
         try {
             User user = userService.findUserProfileByJwt(jwt);
-            Asset asset = assetService.findAssetByUserIdAndCoinId(user.getId(), coinId);
+            Asset asset = assetService.findAssetByUserIdAndStockId(user.getId(), stockId);
             return ResponseEntity.ok(asset);
         } catch (UserNotFoundException | AssetNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

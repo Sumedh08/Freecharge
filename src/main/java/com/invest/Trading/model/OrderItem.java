@@ -20,8 +20,8 @@ public class OrderItem {
 
     private double quantity;
 
-    @ManyToOne
-    private Coin coin;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private Stock stock;
 
     private double buyPrice;
 
