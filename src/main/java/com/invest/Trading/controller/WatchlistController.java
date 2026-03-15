@@ -5,7 +5,6 @@ import com.invest.Trading.model.User;
 import com.invest.Trading.model.Watchlist;
 import com.invest.Trading.service.StockService;
 import com.invest.Trading.service.UserService;
-import com.invest.Trading.service.UserService;
 import com.invest.Trading.service.WatchlistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
