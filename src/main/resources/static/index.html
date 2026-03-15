@@ -34,7 +34,7 @@
                     <input type="email" id="signup-email" placeholder="Email" required>
                     <input type="text" id="signup-mobile" placeholder="Mobile" required>
                     <input type="password" id="signup-password" placeholder="Password" required>
-                    <button type="submit" class="primary-btn">Create Account (Get ₹1 Cr)</button>
+                    <button type="submit" class="primary-btn">Sign Up and get ₹50,000</button>
                 </form>
             </div>
         </div>
@@ -47,9 +47,9 @@
 
                 <div class="nav-links">
                     <button id="nav-dashboard" class="active">📊 Dashboard</button>
-                    <button id="nav-market">📈 Market</button>
+                    <button id="nav-stocks">📈 Stocks</button>
+                    <button id="nav-mutual-funds">🏦 Mutual Funds</button>
                     <button id="nav-portfolio">💼 Portfolio</button>
-                    <button id="nav-leaderboard">🏆 Leaderboard</button>
                 </div>
 
                 <div class="nav-bottom">
@@ -93,12 +93,30 @@
                         </div>
                     </div>
 
-                    <!-- Market View -->
-                    <div id="view-market" class="hidden">
+                    <!-- Stocks View -->
+                    <div id="view-stocks" class="hidden">
                         <div class="search-bar" style="max-width: 400px; margin-bottom: 1rem;">
                             <input type="text" id="stock-search" placeholder="Search 50+ Indian Stocks...">
                         </div>
                         <div id="stock-list" class="market-grid">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Mutual Funds View -->
+                    <div id="view-mutual-funds" class="hidden">
+                        <div class="tabs" id="mf-filter-tabs" style="margin-bottom: 1.5rem; display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px;">
+                            <button class="active" onclick="filterMutualFunds('All', this)">All</button>
+                            <button id="mf-recommended-btn" onclick="showRecommendedFunds()" style="background:linear-gradient(135deg,#00d09c,#3d7bf5);color:white;border:none;">⭐ Recommended</button>
+                            <button onclick="filterMutualFunds('Large Cap', this)">Large Cap</button>
+                            <button onclick="filterMutualFunds('Mid Cap', this)">Mid Cap</button>
+                            <button onclick="filterMutualFunds('Small Cap', this)">Small Cap</button>
+                            <button onclick="filterMutualFunds('Gold', this)">Gold Fund</button>
+                        </div>
+                        <div class="search-bar" style="max-width: 400px; margin-bottom: 1rem;">
+                            <input type="text" id="mf-search" placeholder="Search Indian Mutual Funds...">
+                        </div>
+                        <div id="mf-list" class="market-grid">
                             <!-- Populated by JS -->
                         </div>
                     </div>
@@ -110,31 +128,7 @@
                         </div>
                     </div>
 
-                    <!-- Leaderboard View -->
-                    <div id="view-leaderboard" class="hidden">
-                        <div class="tabs">
-                            <button class="active" onclick="loadLeaderboard('weekly')">Weekly</button>
-                            <button onclick="loadLeaderboard('monthly')">Monthly</button>
-                            <button onclick="loadLeaderboard('all-time')">All Time</button>
-                        </div>
-                        <div class="card">
-                            <table class="leaderboard-table">
-                                <thead>
-                                    <tr>
-                                        <th>Rank</th>
-                                        <th>Trader</th>
-                                        <th>Return %</th>
-                                        <th>Portfolio Value</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="leaderboard-body">
-                                    <!-- Populated by JS -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                </div>
+                </div><!-- /router-view -->
             </main>
         </div>
     </div>
@@ -167,7 +161,39 @@
         </div>
     </div>
 
-    <script src="js/script.js?v=7"></script>
+    <!-- Agentic Blur Overlay -->
+    <div id="spotlight-overlay" class="hidden"></div>
+
+    <!-- AI Axis Floating Chat Window -->
+    <div id="axis-chat-widget" class="hidden">
+        <div class="chat-header">
+            <div style="display:flex; align-items:center; gap:10px;">
+                <div class="ai-avatar">🤖</div>
+                <div>
+                   <h3 style="margin:0; font-size:16px;">Axis AI Mentor</h3>
+                   <span style="font-size:11px; color:var(--success);">Online</span>
+                </div>
+            </div>
+            <button id="close-chat-btn" style="background:none; border:none; color:white; font-size:24px; cursor:pointer;">&times;</button>
+        </div>
+        <div id="chat-messages" class="chat-messages">
+            <!-- Messages populating here -->
+            <div class="message ai">
+                Hi there! I'm Axis. I'm here to help you navigate the platform, understand investing, and find options that match your goals. Let's get started!
+            </div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Ask about mutual funds, risk, or goals...">
+            <button id="send-chat-btn" class="primary-btn" style="border-radius: 50%; width: 40px; height: 40px; padding: 0; display:flex; justify-content:center; align-items:center;">➤</button>
+        </div>
+    </div>
+
+    <!-- AI Axis FAB (Floating Action Button) -->
+    <button id="axis-fab" class="hidden">
+        <span>🤖</span>
+    </button>
+
+    <script src="js/script.js?v=11"></script>
 </body>
 
 </html>

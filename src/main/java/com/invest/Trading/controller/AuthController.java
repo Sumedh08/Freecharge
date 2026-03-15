@@ -58,7 +58,7 @@ public class AuthController {
         newUser.setFullName(user.getFullName());
         newUser.setMobile(user.getMobile());
         newUser.setPassword(passwordEncoder.encode(user.getPassword()));
-        newUser.setBalance(new BigDecimal("10000000")); // 1 Crore INR Initial Balance
+        newUser.setBalance(new BigDecimal("50000")); // 50,000 INR Initial Balance
 
         userRepository.save(newUser);
 

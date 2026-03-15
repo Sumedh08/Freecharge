@@ -12,5 +12,7 @@ RUN ./mvnw package -DskipTests -B
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 COPY --from=builder /app/target/*.jar app.jar
+# Render sets the PORT env var, we default to 9876 for local
+ENV PORT=9876
 EXPOSE 9876
 ENTRYPOINT ["java", "-jar", "app.jar"]
