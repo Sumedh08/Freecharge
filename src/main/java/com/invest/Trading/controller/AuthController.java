@@ -7,7 +7,6 @@ import com.invest.Trading.config.JwtProvider;
 import com.invest.Trading.model.User;
 import com.invest.Trading.repository.UserRepository;
 import com.invest.Trading.response.AuthResponse;
-import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
