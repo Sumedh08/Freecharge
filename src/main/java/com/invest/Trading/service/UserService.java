@@ -5,7 +5,6 @@ import com.invest.Trading.exception.UserNotFoundException;
 import com.invest.Trading.model.PortfolioSnapshot;
 import com.invest.Trading.model.User;
 import java.util.List;
-import jdk.jshell.spi.ExecutionControl;
 
 public interface UserService {
 

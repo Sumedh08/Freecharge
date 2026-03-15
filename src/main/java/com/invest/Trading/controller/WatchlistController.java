@@ -5,8 +5,8 @@ import com.invest.Trading.model.User;
 import com.invest.Trading.model.Watchlist;
 import com.invest.Trading.service.StockService;
 import com.invest.Trading.service.UserService;
+import com.invest.Trading.service.UserService;
 import com.invest.Trading.service.WatchlistService;
-import jdk.jshell.spi.ExecutionControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +40,7 @@ public class WatchlistController {
 
         @PostMapping("/create")
         public ResponseEntity<Watchlist> createWatchlist(
-                        @RequestHeader("Authorization") String jwt) throws ExecutionControl.UserException {
+                        @RequestHeader("Authorization") String jwt) throws Exception {
                 User user = userService.findUserProfileByJwt(jwt);
                 Watchlist createdWatchlist = watchlistService.createWatchList(user);
                 return ResponseEntity.status(HttpStatus.CREATED).body(createdWatchlist);

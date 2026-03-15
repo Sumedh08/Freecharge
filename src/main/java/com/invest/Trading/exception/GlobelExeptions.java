@@ -1,6 +1,5 @@
 package com.invest.Trading.exception;
 
-import jdk.jshell.spi.ExecutionControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -11,16 +10,6 @@ import java.time.LocalDateTime;
 
 @ControllerAdvice
 public class GlobelExeptions {
-	
-	
-	@ExceptionHandler(ExecutionControl.UserException.class)
-	public ResponseEntity<ErrorDetails> userExceptionHandler(ExecutionControl.UserException ue,
-															 WebRequest req){
-		ErrorDetails error=new ErrorDetails(ue.getMessage(),
-				req.getDescription(false),
-				LocalDateTime.now());
-		return new ResponseEntity<ErrorDetails>(error,HttpStatus.BAD_REQUEST);
-	}
 
 	@ExceptionHandler(RuntimeException.class)
 	public ResponseEntity<ErrorDetails> handleRuntimeException(RuntimeException ex, WebRequest request) {
